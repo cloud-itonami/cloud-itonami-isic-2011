@@ -20,10 +20,11 @@ cd cloud-itonami-isic-2011
 ## 2. Run tests
 
 ```bash
-clojure -M:test
+clojure -M:dev:test
+clojure -M:lint
 ```
 
-Expect green if maturity is `unknown`. Fix failures before operating.
+Fix failures before operating.
 
 ## 3. Open the product face
 
@@ -36,8 +37,9 @@ Publish: enable GitHub Pages on `main` `/docs`, or any static host.
 ## 4. Where the Governor sits
 
 - Blueprint governor key: `chemical-safety-governor`
-- Likely source path: `src/**/chemical-safety-governor.cljc`
-- Pattern: advise → govern → phase-gate → commit | escalate | hold (itonami actor / ADR-2607011000)
+- Source path: `src/basicchem/governor.cljc` (Basic Chemicals Advisor ⊣ Chemical Safety Governor)
+- Ops: `:log-production-batch` / `:schedule-maintenance` / `:flag-safety-concern` / `:release-batch`
+- Pattern: advise → govern → phase-gate → commit | escalate | hold (langgraph-clj StateGraph actor, ADR-2607011000). Demo: `clojure -M:dev:run`.
 
 ## 5. Claim / go-live
 

@@ -24,18 +24,50 @@ parameter) require human sign-off.
 ## Core Contract
 
 ```text
-intake + identity + process specification + production/inspection mission
+log-production-batch + schedule-maintenance + flag-safety-concern + release-batch
         |
         v
-Manufacturing Advisor -> Chemical Safety Governor -> process record, batch release, or human approval
+Basic Chemicals Advisor -> Chemical Safety Governor (HARD holds un-overridable)
         |
         v
-robot actions (gated) + production history record + release record + audit ledger
+phase gate (log/release/flag-concern always escalate; only maintenance may auto-commit)
+        |
+        v
+human approval for high stakes -> append-only ledger + draft records
 ```
 
 No automated advice can release a chemical batch the governor refuses,
-approve a process change outside its verified specification, or publish
-a release record without governor approval and audit evidence.
+release a batch that was never logged or whose own reaction parameters
+fall outside spec, or commit a batch record/release while an
+unresolved process-safety concern is on file for it.
+
+## Actuation honesty
+
+Logging a production batch and releasing a batch to market produce
+**unsigned draft records and ledger facts only**. This actor does not
+talk to a real plant control system or a market-release/customs
+portal. Signature and the physical act of shipping/releasing product
+are the chemical manufacturer's own acts.
+
+## Ops
+
+| Op | Effect |
+|---|---|
+| `:log-production-batch` | record a produced batch under its jurisdiction's evidence checklist (always human) |
+| `:schedule-maintenance` | routine reactor/equipment maintenance schedule (phase 3 may auto-commit when clean -- no capital/product risk) |
+| `:flag-safety-concern` | process-safety concern report -- abnormal reaction temperature/pressure, toxic-substance leak risk, etc. (ALWAYS human, even when the reported concern is minor -- it never HARD-holds on its own finding, unlike a defect-screening op) |
+| `:release-batch` | market-release decision for a batch (always human; HARD-blocked if unlogged, evidence-incomplete, reaction parameters out of spec, or an unresolved safety concern is on file) |
+
+## Refrigerant supply linkage (cloud-itonami-isic-2813)
+
+`:release-batch`'s proposal may OPTIONALLY carry a `:handoff` (the
+superproject `:handoff` shared shape, ADR-2607177600/ADR-2800000500,
+reused as-is) naming this actor as the R-448A refrigerant-charge
+supplier of `cloud-itonami-isic-2813`'s `part:refrigerant-charge` BOM
+line, received via that actor's own `:register-part-receipt` op.
+`:handoff` itself is entirely optional; a `:handoff` that IS present
+but missing its own required identity fields (`:handoff/id`/
+`:handoff/source-actor`/`:handoff/batch-id`) is a HARD hold.
 
 ## Capability layer
 
@@ -47,6 +79,14 @@ Resolves via [`kotoba-lang/industry`](https://github.com/kotoba-lang/industry)
 
 See [`docs/business-model.md`](docs/business-model.md) and
 [`docs/operator-guide.md`](docs/operator-guide.md).
+
+## Develop
+
+```bash
+clojure -M:dev:test
+clojure -M:lint
+clojure -M:dev:run
+```
 
 ## License
 
