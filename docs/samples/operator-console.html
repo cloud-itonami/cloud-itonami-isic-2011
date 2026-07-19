@@ -1,0 +1,70 @@
+<html><head><meta charset="utf-8"><title>cloud-itonami-isic-2011 &middot; basic-chemicals manufacture</title><style>
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.ok { color: #137a3f; }
+body { font-family: system-ui,-apple-system,sans-serif; margin: 0; color: #1a1a1a; background: #fafafa; }
+header.bar { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: #fff; border-bottom: 1px solid #e5e5e5; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #f0f0f0; }
+h2 { margin-top: 0; font-size: 15px; }
+.warn { color: #b25c00; background: #fff8e1; padding: 2px 6px; border-radius: 4px; }
+main { max-width: 980px; margin: 24px auto; padding: 0 20px; }
+header.bar h1 { font-size: 18px; margin: 0; font-weight: 600; }
+.muted { color: #888; font-size: 13px; }
+.critical { color: #fff; background: #b3261e; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+.card { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+.err { color: #b3261e; background: #fbe9e7; padding: 2px 6px; border-radius: 4px; }
+th { font-weight: 600; color: #555; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+header.bar .badge { margin-left: auto; font-size: 12px; color: #666; }
+code { font-size: 12px; background: #f4f4f4; padding: 1px 4px; border-radius: 3px; }
+</style></head><body>
+<header class="bar">
+  <h1>Basic chemicals manufacture (ISIC 2011) — Operator Console</h1>
+  <span class="badge">read-only sample · governor-gated · batch-log/batch-release/safety-flag always human-approved</span>
+</header>
+<main>
+  <section class="card">
+    <h2>Production batches</h2>
+    <p class="muted">Demo snapshot — build-time-generated from <code>basicchem.store</code> via <code>basicchem.render-html</code> (<code>clojure -M:dev:render-html</code>), regenerated nightly.</p>
+    <table>
+      <thead><tr><th>Batch</th><th>Name</th><th>Jurisdiction</th><th>Product type</th><th>Logged?</th><th>Released?</th><th>Last op status</th></tr></thead>
+      <tbody>
+        <tr><td>batch-1</td><td>R-448A ブレンドバッチ #1 (JPN, 清浄)</td><td>JPN</td><td>r448a-refrigerant-blend</td><td>yes</td><td>yes</td><td><span class="critical">HARD hold &middot; already-released</span></td></tr>
+        <tr><td>batch-2</td><td>汎用溶剤バッチ #2 (未登録法域)</td><td>ATL</td><td>n-a</td><td>no</td><td>no</td><td><span class="critical">HARD hold &middot; no-spec-basis</span></td></tr>
+        <tr><td>batch-3</td><td>R-448A ブレンドバッチ #3 (JPN, 反応温度異常)</td><td>JPN</td><td>r448a-refrigerant-blend</td><td>yes</td><td>no</td><td><span class="critical">HARD hold &middot; reaction-temp-out-of-range</span></td></tr>
+        <tr><td>batch-4</td><td>R-448A ブレンドバッチ #4 (JPN, 安全懸念デモ用)</td><td>JPN</td><td>r448a-refrigerant-blend</td><td>yes</td><td>no</td><td><span class="critical">HARD hold &middot; safety-concern-unresolved</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Action gate (Chemical Safety Governor)</h2>
+    <p class="muted">HARD holds cannot be overridden. Reaction-temperature and evidence-completeness are independently recomputed, never trusted from the proposal; an unresolved process-safety concern permanently blocks logging/release of its batch until a human-approved resolution flag clears it.</p>
+    <table>
+      <thead><tr><th>Op</th><th>Gate</th></tr></thead>
+      <tbody>
+        <tr><td><code>:log-production-batch</code></td><td><span class="warn">ALWAYS human approval</span> &middot; spec-basis citation independently checked</td></tr>
+        <tr><td><code>:release-batch</code></td><td><span class="warn">ALWAYS human approval</span> &middot; evidence, reaction-temperature, product-type, safety-concern and handoff all independently re-verified</td></tr>
+        <tr><td><code>:flag-safety-concern</code></td><td><span class="warn">ALWAYS human approval</span> (even at low severity) &middot; required fields checked</td></tr>
+        <tr><td><code>:schedule-maintenance</code></td><td><span class="ok">auto-commit when clean, no capital/product risk</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Audit ledger (this run)</h2>
+    <p class="muted">Append-only decision-fact log — every proposal, hold and commit this scenario produced.</p>
+    <table>
+      <thead><tr><th>Fact</th><th>Op</th><th>Subject</th><th>Basis</th></tr></thead>
+      <tbody>
+        <tr><td>committed</td><td><code>log-production-batch</code></td><td>batch-1</td><td>化学物質の審査及び製造等の規制に関する法律(化審法) / 特定化学物質の環境への排出量の把握等及び管理の改善の促進に関する法律(化学物質排出把握管理促進法・PRTR法), https://www.meti.go.jp/policy/chemical_management/kasinhou/index.html</td></tr>
+        <tr><td>committed</td><td><code>release-batch</code></td><td>batch-1</td><td>batch-1</td></tr>
+        <tr><td>governor-hold</td><td><code>log-production-batch</code></td><td>batch-2</td><td>no-spec-basis</td></tr>
+        <tr><td>committed</td><td><code>log-production-batch</code></td><td>batch-3</td><td>化学物質の審査及び製造等の規制に関する法律(化審法) / 特定化学物質の環境への排出量の把握等及び管理の改善の促進に関する法律(化学物質排出把握管理促進法・PRTR法), https://www.meti.go.jp/policy/chemical_management/kasinhou/index.html</td></tr>
+        <tr><td>governor-hold</td><td><code>release-batch</code></td><td>batch-3</td><td>reaction-temp-out-of-range</td></tr>
+        <tr><td>committed</td><td><code>log-production-batch</code></td><td>batch-4</td><td>化学物質の審査及び製造等の規制に関する法律(化審法) / 特定化学物質の環境への排出量の把握等及び管理の改善の促進に関する法律(化学物質排出把握管理促進法・PRTR法), https://www.meti.go.jp/policy/chemical_management/kasinhou/index.html</td></tr>
+        <tr><td>committed</td><td><code>flag-safety-concern</code></td><td>batch-4</td><td>batch-4</td></tr>
+        <tr><td>governor-hold</td><td><code>release-batch</code></td><td>batch-4</td><td>safety-concern-unresolved</td></tr>
+        <tr><td>governor-hold</td><td><code>release-batch</code></td><td>batch-1</td><td>already-released</td></tr>
+        <tr><td>committed</td><td><code>schedule-maintenance</code></td><td>mnt-1</td><td>mnt-1, reactor-1</td></tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+</body></html>
