@@ -6,6 +6,12 @@
   (is (some? (facts/spec-basis "JPN")))
   (is (string? (:provenance (facts/spec-basis "JPN")))))
 
+(deftest mex-has-a-spec-basis
+  (is (some? (facts/spec-basis "MEX")))
+  (is (string? (:provenance (facts/spec-basis "MEX"))))
+  (is (= "Secretaría de Medio Ambiente y Recursos Naturales (SEMARNAT)"
+         (:owner-authority (facts/spec-basis "MEX")))))
+
 (deftest unknown-jurisdiction-has-no-fabricated-spec-basis
   (is (nil? (facts/spec-basis "ATL"))))
 
@@ -15,11 +21,23 @@
     (is (= ["ATL"] (:missing-jurisdictions report)))
     (is (= ["GBR" "JPN"] (:covered-jurisdictions report)))))
 
+(deftest coverage-includes-mex
+  (let [report (facts/coverage ["JPN" "MEX" "ATL"])]
+    (is (= 2 (:covered report)))
+    (is (= ["ATL"] (:missing-jurisdictions report)))
+    (is (= ["JPN" "MEX"] (:covered-jurisdictions report)))))
+
 (deftest required-evidence-satisfied-needs-every-item
   (let [all (facts/evidence-checklist "JPN")]
     (is (facts/required-evidence-satisfied? "JPN" all))
     (is (not (facts/required-evidence-satisfied? "JPN" (rest all))))
     (is (not (facts/required-evidence-satisfied? "ATL" all)) "no spec-basis -> never satisfied")))
+
+(deftest mex-required-evidence-satisfied-needs-every-item
+  (let [all (facts/evidence-checklist "MEX")]
+    (is (= 4 (count all)))
+    (is (facts/required-evidence-satisfied? "MEX" all))
+    (is (not (facts/required-evidence-satisfied? "MEX" (rest all))))))
 
 ;; ──────────────── Product-Model Catalog (UNSPSC/GTIN linkage) ────────────────
 

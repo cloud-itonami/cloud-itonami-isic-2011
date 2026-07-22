@@ -15,10 +15,27 @@
   evaluation, authorisation and restriction of chemicals, administered
   via ECHA) plus the EU F-gas Regulation (EU) 2024/573 (fluorinated
   greenhouse gases, directly relevant to a hydrofluorocarbon/
-  hydrofluoroolefin refrigerant blend), and the UK's retained UK REACH
+  hydrofluoroolefin refrigerant blend), the UK's retained UK REACH
   (HSE-administered, via The REACH etc. (Amendment etc.) (EU Exit)
-  Regulations 2019) plus its own retained GB F-gas regime -- this is a
-  starting catalog, not a survey of every market.")
+  Regulations 2019) plus its own retained GB F-gas regime, and Mexico's
+  Ley General del Equilibrio Ecológico y la Protección al Ambiente
+  (LGEEPA) -- Capítulo V, Actividades Consideradas como Altamente
+  Riesgosas (Artículos 145 a 149 y 147 BIS: SEMARNAT-administered
+  classification of highly-hazardous chemical activities, mandatory
+  estudio de riesgo ambiental + accident-prevention program before
+  operating, and environmental-risk insurance via the Sistema Nacional
+  de Seguros de Riesgo Ambiental) plus Artículo 109 BIS (the Registro
+  de Emisiones y Transferencia de Contaminantes / RETC
+  pollutant-release-and-transfer register) -- both articles confirmed
+  directly against the current 'TEXTO VIGENTE' text (última reforma
+  DOF 19-01-2026) fetched from diputados.gob.mx this session. Mexico's
+  entry intentionally does NOT cite a national SDS-equivalent standard
+  or a production/import-volume-reporting duty the way JPN/USA/DEU/GBR
+  do above: no source fetched this session confirmed a specific
+  Mexican citation for either (a candidate would be an STPS
+  hazard-communication NOM, but that was not independently verified),
+  so none is fabricated here -- this is a starting catalog, not a
+  survey of every market.")
 
 (def catalog
   {"JPN" {:name "Japan"
@@ -56,7 +73,16 @@
           :required-evidence ["UK REACH登録記録 (uk-reach-registration-record)"
                               "安全データシート(SDS)提供記録 (sds-provision-record)"
                               "GB F-gas上市クオータ報告記録 (f-gas-reporting-record)"
-                              "製造・輸入実績記録 (manufacture-import-volume-record)"]}})
+                              "製造・輸入実績記録 (manufacture-import-volume-record)"]}
+   "MEX" {:name "Mexico"
+          :owner-authority "Secretaría de Medio Ambiente y Recursos Naturales (SEMARNAT)"
+          :legal-basis "Ley General del Equilibrio Ecológico y la Protección al Ambiente (LGEEPA), Título Cuarto Capítulo V, Actividades Consideradas como Altamente Riesgosas (Artículos 145 a 149 y 147 BIS) / Artículo 109 BIS (Registro de Emisiones y Transferencia de Contaminantes, RETC)"
+          :national-spec "clasificación de actividades industriales・comerciales・de servicios como altamente riesgosas en función de sustancias corrosivas・reactivas・explosivas・tóxicas・inflamables・biológico-infecciosas (Art. 146), estudio de riesgo ambiental y programa de prevención de accidentes previo a la operación (Art. 147), seguro de riesgo ambiental mediante el Sistema Nacional de Seguros de Riesgo Ambiental (Art. 147 BIS), integración al Registro de Emisiones y Transferencia de Contaminantes/RETC (Art. 109 BIS)"
+          :provenance "https://www.diputados.gob.mx/LeyesBiblio/pdf/LGEEPA.pdf"
+          :required-evidence ["estudio de riesgo ambiental (environmental-risk-study-record)"
+                              "programa de prevención de accidentes (accident-prevention-program-record)"
+                              "seguro de riesgo ambiental / Sistema Nacional de Seguros de Riesgo Ambiental (environmental-risk-insurance-record)"
+                              "Registro de Emisiones y Transferencia de Contaminantes / RETC (pollutant-release-transfer-registry-record)"]}})
 
 (defn spec-basis [iso3] (get catalog iso3))
 
