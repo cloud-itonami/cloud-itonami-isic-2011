@@ -38,10 +38,9 @@
   the audit trail a community trusting a chemical manufacturer needs,
   and the evidence a manufacturer needs if a release decision is later
   disputed."
-  (:require #?(:clj  [clojure.edn :as edn]
-               :cljs [cljs.reader :as edn])
-            [basicchem.registry :as registry]
-            [langchain.db :as d]))
+  (:require [basicchem.registry :as registry]
+            [langchain.db :as d]
+            [langchain-store.core :as ls]))
 
 (defprotocol Store
   (batch [s id])
@@ -212,8 +211,8 @@
    :log-sequence/jurisdiction         {:db/unique :db.unique/identity}
    :release-sequence/jurisdiction     {:db/unique :db.unique/identity}})
 
-(defn- enc [v] (pr-str v))
-(defn- dec* [s] (when s (edn/read-string s)))
+(defn- enc [v] (ls/enc v))
+(defn- dec* [s] (ls/dec* s))
 
 (defn- batch->tx [{:keys [id batch-name product-type-id
                           reaction-temp-actual-c reaction-temp-min-c reaction-temp-max-c
