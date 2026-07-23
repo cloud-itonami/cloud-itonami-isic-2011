@@ -35,7 +35,57 @@
   Mexican citation for either (a candidate would be an STPS
   hazard-communication NOM, but that was not independently verified),
   so none is fabricated here -- this is a starting catalog, not a
-  survey of every market.")
+  survey of every market.
+
+  South Korea's entry cites TWO Acts administered by the same ministry,
+  mirroring JPN's 化審法+PRTR法 pair: the Act on Registration and
+  Evaluation of Chemical Substances (화학물질의 등록 및 평가 등에 관한
+  법률, 화평법/K-REACH, Act No. 19964) Article 10 (registration
+  threshold: at least 100kg/year of a 'non-phase-in substance' or at
+  least 1 ton/year of a 'phase-in substance' must be registered with
+  the Minister of Environment before manufacture/import) and Article 2
+  (definitions of 'hazardous chemical substance' as the union of toxic
+  substances/substances subject to permission/restricted substances/
+  prohibited substances), plus the Chemical Substances Control Act
+  (화학물질관리법, 화관법/CSCA, Act No. 20231) Article 10 (a statistical
+  survey of chemical-substance handling volume every two years) Article
+  11 (Pollutant Release and Transfer Registers -- 'the Minister of
+  Environment shall implement surveys for the pollutant release and
+  transfer registers to track chemical releases from the process of
+  handling the relevant chemical substances at the places of business')
+  and Article 16 (GHS-style container/package labeling of hazardous
+  chemical substances: pictogram, signal word, hazard/precautionary
+  phrases, supplier information) -- both fetched and read directly
+  from elaw.klri.re.kr (Korea Legislation Research Institute's official
+  English statute-translation portal) this session:
+  https://elaw.klri.re.kr/eng_service/lawView.do?hseq=68246&lang=ENG
+  (K-REACH, the `:provenance` value below) and
+  https://elaw.klri.re.kr/eng_service/lawView.do?hseq=64986&lang=ENG
+  (CSCA). The administering
+  ministry itself was renamed in the interim: the Act text says
+  '환경부/Minister of Environment', but me.go.kr now redirects to
+  mcee.go.kr whose English homepage title is 'Ministry of Climate,
+  Energy and Environment' (기후에너지환경부) -- confirmed directly this
+  session, both names refer to the same ministry. K-REACH Article 48
+  names the National Institute of Environmental Research (국립환경과학원/
+  NIER, nier.go.kr title confirmed this session) and the National
+  Institute of Chemical Safety (화학물질안전원/NICS) as the ministry's
+  delegates for authority under the Act. Two honest gaps: (1) this
+  entry does NOT include a Korean sds-provision-record analog -- the
+  K-REACH text itself defers the actual material-safety-data-sheet
+  duty to Article 110/111 of the Occupational Safety and Health Act,
+  a DIFFERENT act administered by a different ministry (Employment and
+  Labor) that was not independently fetched/verified this session, so
+  it is not cited here (same non-fabrication discipline as MEX's SDS
+  gap above); (2) the CSCA (last English amendment shown: Feb. 6, 2024)
+  cross-references K-REACH definitions using newer subparagraph
+  numbers/terms ('substance acutely/chronically hazardous to human
+  health', 6-2, 6-3) that do NOT appear in the K-REACH English
+  translation fetched this session (last amendment shown: Jan. 9,
+  2024, still using 'toxic substance' at subparagraph 6) -- this looks
+  like an elaw English-translation lag behind a later Korean-only
+  K-REACH amendment, not a contradiction; this entry only cites the
+  K-REACH wording actually read this session.")
 
 (def catalog
   {"JPN" {:name "Japan"
@@ -82,7 +132,16 @@
           :required-evidence ["estudio de riesgo ambiental (environmental-risk-study-record)"
                               "programa de prevención de accidentes (accident-prevention-program-record)"
                               "seguro de riesgo ambiental / Sistema Nacional de Seguros de Riesgo Ambiental (environmental-risk-insurance-record)"
-                              "Registro de Emisiones y Transferencia de Contaminantes / RETC (pollutant-release-transfer-registry-record)"]}})
+                              "Registro de Emisiones y Transferencia de Contaminantes / RETC (pollutant-release-transfer-registry-record)"]}
+   "KOR" {:name "South Korea"
+          :owner-authority "환경부 (Ministry of Environment; 2025년 정부조직 개편 이후 기후에너지환경부/Ministry of Climate, Energy and Environment) -- 국립환경과학원(NIER)・화학물질안전원(NICS)에 권한 위임(화평법 제48조)"
+          :legal-basis "화학물질의 등록 및 평가 등에 관한 법률(화평법・K-REACH, 법률 제19964호) / 화학물질관리법(화관법, 법률 제20231호)"
+          :national-spec "연간 1톤 이상 기존화학물질(phase-in substance) 또는 연간 100킬로그램 이상 신규화학물질(non-phase-in substance)을 제조・수입하려는 자의 등록 의무(화평법 제10조), 유독물질・허가물질・제한물질・금지물질로 구성되는 유해화학물질의 정의(화평법 제2조), 화학물질 취급현황에 대한 2년 주기 통계조사(화관법 제10조), 화학물질 배출량조사 및 등록(PRTR, 화관법 제11조), 유해화학물질 용기・포장에 대한 그림문자・신호어 등 표시 의무(화관법 제16조)"
+          :provenance "https://elaw.klri.re.kr/eng_service/lawView.do?hseq=68246&lang=ENG"
+          :required-evidence ["화평법 제10조 신규・기존화학물질 등록 기록 (chemical-substance-registration-record)"
+                              "화관법 제10조 화학물질 취급현황 통계조사 기록 (manufacture-import-volume-record)"
+                              "화관법 제11조 화학물질 배출량조사・등록 기록 (pollutant-release-transfer-registry-record)"
+                              "화관법 제16조 유해화학물질 표시(그림문자・신호어) 기록 (hazardous-chemical-labeling-record)"]}})
 
 (defn spec-basis [iso3] (get catalog iso3))
 
