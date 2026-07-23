@@ -39,6 +39,23 @@
     (is (facts/required-evidence-satisfied? "MEX" all))
     (is (not (facts/required-evidence-satisfied? "MEX" (rest all))))))
 
+(deftest kor-has-a-spec-basis
+  (is (some? (facts/spec-basis "KOR")))
+  (is (string? (:provenance (facts/spec-basis "KOR"))))
+  (is (re-find #"Ministry of Environment" (:owner-authority (facts/spec-basis "KOR")))))
+
+(deftest coverage-includes-kor
+  (let [report (facts/coverage ["JPN" "KOR" "ATL"])]
+    (is (= 2 (:covered report)))
+    (is (= ["ATL"] (:missing-jurisdictions report)))
+    (is (= ["JPN" "KOR"] (:covered-jurisdictions report)))))
+
+(deftest kor-required-evidence-satisfied-needs-every-item
+  (let [all (facts/evidence-checklist "KOR")]
+    (is (= 4 (count all)))
+    (is (facts/required-evidence-satisfied? "KOR" all))
+    (is (not (facts/required-evidence-satisfied? "KOR" (rest all))))))
+
 ;; ──────────────── Product-Model Catalog (UNSPSC/GTIN linkage) ────────────────
 
 (deftest r448a-refrigerant-blend-product-type-has-unspsc-and-gtin
