@@ -29,7 +29,7 @@
   or releasing it to market itself (that is `basicchem.operation`'s
   `:log-production-batch`/`:release-batch`, always human-gated -- see
   README `Actuation`)."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 (defn- unsigned-certificate
   "Every certificate this actor produces is UNSIGNED -- signature is the
@@ -73,7 +73,7 @@
     (throw (ex-info "batch-log: jurisdiction required" {})))
   (when (< sequence 0)
     (throw (ex-info "batch-log: sequence must be >= 0" {})))
-  (let [log-number (str (str/upper-case jurisdiction) "-BCM-" (zero-pad sequence 6))
+  (let [log-number (str (str/upper jurisdiction) "-BCM-" (zero-pad sequence 6))
         record {"record_id" log-number
                 "kind" "production-batch-log-draft"
                 "batch_id" batch-id
@@ -107,7 +107,7 @@
     (throw (ex-info "batch-release: jurisdiction required" {})))
   (when (< sequence 0)
     (throw (ex-info "batch-release: sequence must be >= 0" {})))
-  (let [release-number (str (str/upper-case jurisdiction) "-REL-" (zero-pad sequence 6))
+  (let [release-number (str (str/upper jurisdiction) "-REL-" (zero-pad sequence 6))
         record (cond-> {"record_id" release-number
                         "kind" "batch-release-draft"
                         "batch_id" batch-id
