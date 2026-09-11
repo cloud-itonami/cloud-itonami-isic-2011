@@ -37,7 +37,7 @@ Publish: enable GitHub Pages on `main` `/docs`, or any static host.
 ## 4. Where the Governor sits
 
 - Blueprint governor key: `chemical-safety-governor`
-- Source path: `src/basicchem/governor.cljc` (Basic Chemicals Advisor ⊣ Chemical Safety Governor)
+- Source path: `src/basicchem/governor.cljk` (Basic Chemicals Advisor ⊣ Chemical Safety Governor)
 - Ops: `:log-production-batch` / `:schedule-maintenance` / `:flag-safety-concern` / `:release-batch`
 - Pattern: advise → govern → phase-gate → commit | escalate | hold (langgraph-clj StateGraph actor, ADR-2607011000). Demo: `clojure -M:dev:run`.
 
