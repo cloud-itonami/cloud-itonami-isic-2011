@@ -1,5 +1,5 @@
 (ns basicchem.sim
-  "Demo driver -- `clojure -M:dev:run`. Walks a clean batch through
+  "Demo driver -- `kbb -M:dev:run`. Walks a clean batch through
   log -> human approval -> commit, then release -> human approval ->
   commit (attaching an OPTIONAL `:handoff` to the downstream refrigerant-
   compressor manufacturer cloud-itonami-isic-2813, ADR-2800000500),
