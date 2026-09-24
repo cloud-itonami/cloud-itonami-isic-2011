@@ -1,0 +1,43 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README "Robotics premise": robots do process operation, sampling and
+;; inspection in a basic-chemicals plant (ISIC 2011) under an actor that
+;; proposes and the Chemical Safety Governor that gates. Their physical work:
+;; draining a batch vessel through its bottom valve to the transfer tank,
+;; carrying filled 200 L drums up the loading ramp, and keeping watch on a
+;; bulk store of a self-heating product.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-2011"
+ :cases
+ [{:id :batch-vessel-bottom-drain
+   :kind :tank-drain
+   :procedure "robot opens the bottom valve of a 2.5 m-diameter batch vessel and drains it from 2.2 m to a 0.1 m heel"
+   :params {:tank-area-m2 4.9 :h0-m 2.2 :h-target-m 0.1 :cd 0.62 :dt-s 0.5 :max-time-s 14400.0}
+   :sweep {:param :orifice-area-m2 :values [0.002 0.003 0.005 0.008 0.012]}
+   :quantity :time-to-target-s
+   :limit {:max 1800.0 :basis "estimate: a batch transfer must fit a 30-minute slot between reaction and the next charge"}
+   :boundary {:lo 0.001 :hi 0.03}}
+  {:id :drum-up-loading-ramp
+   :kind :transport
+   :procedure "AMR carries two filled 200 L drums (payload 2 x 250 kg) up the loading-dock ramp"
+   :params {:mass-kg 200.0 :payload-kg 500.0 :distance-m 15.0 :v-max-mps 0.8 :a-max-mps2 0.3
+            :brake-decel-mps2 0.6 :drive-force-n 1500.0 :crr 0.015
+            :cog-height-m 0.30 :payload-cog-height-m 0.75 :support-half-length-m 0.45 :max-time-s 600.0}
+   :sweep {:param :slope-deg :values [0.0 3.0 6.0 9.0 12.0]}
+   :quantity :min-tipover-margin
+   :limit {:min 0.3 :basis "estimate: keep 30 % of the restoring moment in reserve for liquid slosh in part-filled drums"}
+   :boundary {:lo 0.0 :hi 20.0}}
+  {:id :self-heating-bulk-store
+   :kind :thermal
+   :procedure "bulk bag of a self-heating solid product in a 30 C store: centre temperature after 30 days (half thickness 0.4 m, centre adiabatic)"
+   :params {:thickness-m 0.4 :conductivity-w-mk 0.1 :density-kg-m3 1000.0 :specific-heat-j-kgk 1500.0
+            :t0-c 30.0 :t-hot-c 30.0 :h-front-w-m2k 5.0 :h-back-w-m2k 0.0
+            :threshold-c 60.0 :duration-s 2592000.0 :nodes 11}
+   :sweep {:param :q-gen-w-m3 :values [5.0 10.0 20.0 40.0 60.0]}
+   :quantity :peak-back-c
+   :limit {:max 60.0 :basis "estimate: a 60 C centre temperature taken as the alarm point for a self-heating product; the product's own SADT/self-heating data would replace it"}
+   :boundary {:lo 1.0 :hi 200.0}}]}
