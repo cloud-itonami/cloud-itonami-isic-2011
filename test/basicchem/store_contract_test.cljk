@@ -5,7 +5,7 @@
   configuration change, not a rewrite -- see `pressureequip.store-
   contract-test` (cloud-itonami-isic-2813) for the same pattern on the
   sibling actor."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [basicchem.store :as store]))
 
 (defn- backends []
